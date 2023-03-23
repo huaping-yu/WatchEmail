@@ -25,22 +25,22 @@ namespace WatchEmail
         protected void Items_ItemAdd(object Item)
         {
             MailItem mail = (MailItem)Item;
-
-            string arg = "n";
+            string mailBody = mail.Body;
             string fileName = @"C:\Source\GetNZip\GetNZip\bin\Debug\p.exe";
+            string arg = "n";
 
             if (mail != null)
             {
-                bool findBal = ParseNGet.Program.Constants.keywordsBal.Any(s => mail.Body.ToLower().Contains(s));
-                bool listVeh = ParseNGet.Program.Constants.keywordsListVeh.Any(s => mail.Body.ToLower().Contains(s));
-                bool locateChk = ParseNGet.Program.Constants.keywordsChk.Any(s => mail.Body.ToLower().Contains(s));
-                bool forDon = ParseNGet.Program.Constants.keywordsDon.Any(s => mail.Body.ToLower().Contains(s));
-                bool forSeema = ParseNGet.Program.Constants.keywordsSeema.Any(s => mail.Body.ToLower().Contains(s));
-                bool provideVIN = ParseNGet.Program.Constants.keywordsVIN.Any(s => mail.Body.Contains(s));
+                bool findBal = ParseNGet.Program.Constants.keywordsBal.Any(s => mailBody.ToLower().Contains(s));
+                bool listVeh = ParseNGet.Program.Constants.keywordsListVeh.Any(s => mailBody.ToLower().Contains(s));
+                bool locateChk = ParseNGet.Program.Constants.keywordsChk.Any(s => mailBody.ToLower().Contains(s));
+                bool forDon = ParseNGet.Program.Constants.keywordsDon.Any(s => mailBody.ToLower().Contains(s));
+                bool forSeema = ParseNGet.Program.Constants.keywordsSeema.Any(s => mailBody.ToLower().Contains(s));
+                bool provideVIN = ParseNGet.Program.Constants.keywordsVIN.Any(s => mailBody.Contains(s));
                 bool fromScoff = ParseNGet.Program.Constants.keywordsScoff.Any(s=> mail.SenderEmailAddress.Contains(s));
-                bool fromBob = ParseNGet.Program.Constants.keywordsBob.Any(s => mail.Body.Contains(s));
-                bool fromBob2 = ParseNGet.Program.Constants.keywordsBob2.Any(s => mail.Body.Contains(s));
-                bool fromJinger = ParseNGet.Program.Constants.keywordsJinger.Any(s => mail.Body.Contains(s));
+                bool fromBob = ParseNGet.Program.Constants.keywordsBob.Any(s => mailBody.Contains(s));
+                bool fromBob2 = ParseNGet.Program.Constants.keywordsBob2.Any(s => mailBody.Contains(s));
+                bool fromJinger = ParseNGet.Program.Constants.keywordsJinger.Any(s => mailBody.Contains(s));
 
                 if (fromJinger || forSeema || fromBob2)
                 {
