@@ -25,12 +25,13 @@ namespace WatchEmail
         protected void Items_ItemAdd(object Item)
         {
             MailItem mail = (MailItem)Item;
-            string mailBody = mail.Body;
+           
             string fileName = @"C:\Source\GetNZip\GetNZip\bin\Debug\p.exe";
             string arg = "n";
 
             if (mail != null)
             {
+                string mailBody = mail.Body;
                 bool findBal = ParseNGet.Program.Constants.keywordsBal.Any(s => mailBody.ToLower().Contains(s));
                 bool listVeh = ParseNGet.Program.Constants.keywordsListVeh.Any(s => mailBody.ToLower().Contains(s));
                 bool locateChk = ParseNGet.Program.Constants.keywordsChk.Any(s => mailBody.ToLower().Contains(s));
