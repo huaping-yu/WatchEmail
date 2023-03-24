@@ -8,8 +8,9 @@ namespace WatchEmail
         static void Main(string[] args)
         {
             Program P = new();
+            ParseNGet.Program pg = new();
             MAPIFolder? watchFolder = null;
-            MAPIFolder inbox = P.GetOutlookInstance().GetDefaultFolder(OlDefaultFolders.olFolderInbox);
+            MAPIFolder inbox = pg.GetOutlookInstance().GetDefaultFolder(OlDefaultFolders.olFolderInbox);
 
             foreach (MAPIFolder subFolder in inbox.Folders)
             {
@@ -71,15 +72,6 @@ namespace WatchEmail
                 proc.WaitForExit();
                 Console.WriteLine("Stdout : {0}", stdoutx);
             }
-        }
-        protected NameSpace GetOutlookInstance()
-        {
-            Application application;
-            NameSpace nameSpace;
-            application = new Application();
-            nameSpace = application.GetNamespace("MAPI");
-            nameSpace.Logon("Outlook", "", Missing.Value, Missing.Value);
-            return nameSpace;
         }
     }
 }
