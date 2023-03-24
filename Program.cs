@@ -16,11 +16,24 @@ namespace WatchEmail
                 if (subFolder.Name == "My Tickets") watchFolder = subFolder;
                 if (watchFolder != null ) break;
             }
-            
             if (watchFolder != null) watchFolder.Items.ItemAdd += new ItemsEvents_ItemAddEventHandler(P.Items_ItemAdd);
+
+            FileSystemWatcher fWatcher = new()
+            {
+                Path = ParseNGet.Program.Constants.bobFolder,
+                NotifyFilter = NotifyFilters.LastWrite,
+                Filter = "*-Msg.txt"
+            };
+            fWatcher.Changed += new FileSystemEventHandler(P.OnCreated);
+            fWatcher.EnableRaisingEvents = true;
 
             // Keep the console application running
             Console.ReadLine();
+        }
+        protected void OnCreated(object source, FileSystemEventArgs e)
+        {
+            ParseNGet.Program pg = new();
+            pg.UpdateNoDataAttach(ParseNGet.Program.Constants.bobFolder);
         }
         protected void Items_ItemAdd(object Item)
         {
