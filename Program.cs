@@ -18,22 +18,36 @@ namespace WatchEmail
             }
             if (watchFolder != null) watchFolder.Items.ItemAdd += new ItemsEvents_ItemAddEventHandler(P.Items_ItemAdd);
 
-            FileSystemWatcher fWatcher = new()
+            FileSystemWatcher bWatcher = new()
             {
                 Path = ParseNGet.Program.Constants.bobFolder,
                 NotifyFilter = NotifyFilters.LastWrite,
                 Filter = "*-Msg.txt"
             };
-            fWatcher.Changed += new FileSystemEventHandler(P.OnCreated);
-            fWatcher.EnableRaisingEvents = true;
+            bWatcher.Changed += new FileSystemEventHandler(P.OnbCreated);
+            bWatcher.EnableRaisingEvents = true;
+
+            FileSystemWatcher jWatcher = new()
+            {
+                Path = ParseNGet.Program.Constants.jingerFolder,
+                NotifyFilter = NotifyFilters.LastWrite,
+                Filter = "*-Msg.txt"
+            };
+            jWatcher.Changed += new FileSystemEventHandler(P.OnjCreated);
+            jWatcher.EnableRaisingEvents = true;
 
             // Keep the console application running
             Console.ReadLine();
         }
-        protected void OnCreated(object source, FileSystemEventArgs e)
+        protected void OnbCreated(object source, FileSystemEventArgs e)
         {
             ParseNGet.Program pg = new();
             pg.UpdateNoDataAttach(ParseNGet.Program.Constants.bobFolder);
+        }
+        protected void OnjCreated(object source, FileSystemEventArgs e)
+        {
+            ParseNGet.Program pg = new();
+            pg.UpdateNoDataAttach(ParseNGet.Program.Constants.jingerFolder);
         }
         protected void Items_ItemAdd(object Item)
         {
