@@ -20,7 +20,7 @@ namespace WatchEmail
 
             FileSystemWatcher bWatcher = new()
             {
-                Path = ParseNGet.Program.Constants.bobFolder,
+                Path = (ParseNGet.Program.RemoteSave ? ParseNGet.Program.Constants.bobFolder.Replace("C:", "Y:") : ParseNGet.Program.Constants.bobFolder),
                 NotifyFilter = NotifyFilters.LastWrite,
                 Filter = "*-Msg.txt"
             };
@@ -29,7 +29,7 @@ namespace WatchEmail
 
             FileSystemWatcher jWatcher = new()
             {
-                Path = ParseNGet.Program.Constants.jingerFolder,
+                Path = (ParseNGet.Program.RemoteSave ? ParseNGet.Program.Constants.jingerFolder.Replace("C:", "Y:") : ParseNGet.Program.Constants.jingerFolder),
                 NotifyFilter = NotifyFilters.LastWrite,
                 Filter = "*-Msg.txt"
             };
