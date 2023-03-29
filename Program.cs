@@ -71,14 +71,13 @@ namespace WatchEmail
                 bool fromJinger = ParseNGet.Program.Constants.keywordsJinger.Any(s => mailBody.Contains(s));
 
                 if (provideVIN) arg = "v";
-
-                if (fromBob || findBal || listVeh || locateChk || forDon || fromScoff) arg = string.Empty;
-
-                if (fromJinger || forSeema || fromBob2)
+                else if (fromBob || findBal || listVeh || locateChk || forDon || fromScoff) arg = string.Empty;
+                else if (fromJinger || forSeema || fromBob2)
                 {
                     fileName = @"C:\Source\GetNZip\GetNZip\bin\Debug\z.exe";
+                    arg = string.Empty;
                     if (forSeema) arg = "s";
-                    if (fromBob2) arg = "b";
+                    else if (fromBob2) arg = "b";
                 }
 
                 var proc = new Process
