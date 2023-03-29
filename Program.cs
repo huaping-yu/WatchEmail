@@ -74,7 +74,8 @@ namespace WatchEmail
 
                 if (provideVIN) arg = "v";
                 else if (noArg) arg = string.Empty;
-                else if (forJinger || forSeema || forBob2)
+
+                if (forJinger || forSeema || forBob2)
                 {
                     fileName = @"C:\Source\GetNZip\GetNZip\bin\Debug\z.exe";
                     arg = string.Empty;
