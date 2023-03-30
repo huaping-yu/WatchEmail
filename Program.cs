@@ -96,9 +96,11 @@ namespace WatchEmail
                     }
                 };
                 proc.Start();
+                //proc.BeginOutputReadLine();
                 string stdoutx = proc.StandardOutput.ReadToEnd();
-                proc.WaitForExit();
                 Console.WriteLine("Stdout : {0}", stdoutx);
+                proc.WaitForExit();
+                proc.Close();
             }
         }
     }
