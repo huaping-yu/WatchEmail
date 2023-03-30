@@ -42,12 +42,12 @@ namespace WatchEmail
         protected void OnbCreated(object source, FileSystemEventArgs e)
         {
             ParseNGet.Program pg = new();
-            pg.UpdateNoDataOrAttach(ParseNGet.Program.Constants.bobFolder);
+            pg.UpdateNoDataOrAttach(Path.GetDirectoryName(e.FullPath));
         }
         protected void OnjCreated(object source, FileSystemEventArgs e)
         {
             ParseNGet.Program pg = new();
-            pg.UpdateJingerDrafts(ParseNGet.Program.Constants.jingerFolder);
+            pg.UpdateJingerDrafts(Path.GetDirectoryName(e.FullPath));
         }
         protected void Items_ItemAdd(object Item)
         {
