@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
 using Microsoft.Office.Interop.Outlook;
 namespace WatchEmail
 {
@@ -9,14 +11,17 @@ namespace WatchEmail
             Program P = new();
             ParseNGet.Program pg = new();
             MAPIFolder? watchFolder = null;
+            MAPIFolder? pdfFolder = null;
             MAPIFolder inbox = pg.GetOutlookInstance().GetDefaultFolder(OlDefaultFolders.olFolderInbox);
 
             foreach (MAPIFolder subFolder in inbox.Folders)
             {
                 if (subFolder.Name == "My Tickets") watchFolder = subFolder;
-                if (watchFolder != null ) break;
+                if (subFolder.Name == "IT-EA") pdfFolder = subFolder;
+                if (watchFolder != null && pdfFolder != null) break;
             }
             if (watchFolder != null) watchFolder.Items.ItemAdd += new ItemsEvents_ItemAddEventHandler(P.Items_ItemAdd);
+            if (pdfFolder != null) pdfFolder.Items.ItemAdd += new ItemsEvents_ItemAddEventHandler(P.Pdf_ItemAdd);
 
             FileSystemWatcher bWatcher = new()
             {
@@ -42,17 +47,17 @@ namespace WatchEmail
         protected void OnbCreated(object source, FileSystemEventArgs e)
         {
             ParseNGet.Program pg = new();
-            pg.UpdateNoDataOrAttach(Path.GetDirectoryName(e.FullPath));
+            pg.UpdateNoDataOrAttach(System.IO.Path.GetDirectoryName(e.FullPath));
         }
         protected void OnjCreated(object source, FileSystemEventArgs e)
         {
             ParseNGet.Program pg = new();
-            pg.UpdateJingerDrafts(Path.GetDirectoryName(e.FullPath));
+            pg.UpdateJingerDrafts(System.IO.Path.GetDirectoryName(e.FullPath));
         }
         protected void Items_ItemAdd(object Item)
         {
             MailItem mail = (MailItem)Item;
-           
+
             string fileName = @"C:\Source\GetNZip\GetNZip\bin\Debug\p.exe";
             string arg = "n";
 
@@ -101,6 +106,36 @@ namespace WatchEmail
                 Console.WriteLine("Stdout : {0}", stdoutx);
                 proc.WaitForExit();
                 proc.Close();
+            }
+        }
+        protected void Pdf_ItemAdd(object Item)
+        {
+            MailItem mail = (MailItem)Item;
+
+            foreach (Attachment attachment in mail.Attachments)
+            {
+                if (attachment.FileName.EndsWith(".pdf"))
+                {
+                    string attachmentPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), attachment.FileName);
+                    attachment.SaveAsFile(attachmentPath);
+                    PdfReader reader = new(attachmentPath);
+
+                    for (int i = 1; i <= reader.NumberOfPages; i++)
+                    {
+                        string[] lines = PdfTextExtractor.GetTextFromPage(reader, i).Split('\n');
+
+                        foreach (string line in lines)
+                        {
+                            if (line.Contains(" Information Technology "))
+                            {
+                                Console.WriteLine(line);
+                            }
+                        }
+                    }
+                    Console.WriteLine('\n' +"end of pdf reached.");
+                    reader.Close();
+                    File.Delete(attachmentPath);
+                }
             }
         }
     }
