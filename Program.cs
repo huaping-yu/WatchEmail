@@ -11,17 +11,16 @@ namespace WatchEmail
             Program P = new();
             ParseNGet.Program pg = new();
             MAPIFolder? watchFolder = null;
-            MAPIFolder? pdfFolder = null;
             MAPIFolder inbox = pg.GetOutlookInstance().GetDefaultFolder(OlDefaultFolders.olFolderInbox);
+            MAPIFolder delFolder = pg.GetOutlookInstance().GetDefaultFolder(OlDefaultFolders.olFolderDeletedItems);
 
             foreach (MAPIFolder subFolder in inbox.Folders)
             {
                 if (subFolder.Name == "My Tickets") watchFolder = subFolder;
-                if (subFolder.Name == "IT-EA") pdfFolder = subFolder;
-                if (watchFolder != null && pdfFolder != null) break;
+                if (watchFolder != null) break;
             }
             if (watchFolder != null) watchFolder.Items.ItemAdd += new ItemsEvents_ItemAddEventHandler(P.Items_ItemAdd);
-            if (pdfFolder != null) pdfFolder.Items.ItemAdd += new ItemsEvents_ItemAddEventHandler(P.Pdf_ItemAdd);
+            if (delFolder != null) delFolder.Items.ItemAdd += new ItemsEvents_ItemAddEventHandler(P.Pdf_ItemAdd);
 
             FileSystemWatcher bWatcher = new()
             {
@@ -110,6 +109,16 @@ namespace WatchEmail
         }
         protected void Pdf_ItemAdd(object Item)
         {
+            ParseNGet.Program pg = new();
+            MAPIFolder inbox = pg.GetOutlookInstance().GetDefaultFolder(OlDefaultFolders.olFolderInbox);
+            MAPIFolder? pdfFolder = null;
+
+            foreach (MAPIFolder subFolder in inbox.Folders)
+            {
+                if (subFolder.Name == "IT-EA") pdfFolder = subFolder;
+                if (pdfFolder != null) break;
+            }
+
             MailItem mail = (MailItem)Item;
 
             foreach (Attachment attachment in mail.Attachments)
@@ -137,6 +146,7 @@ namespace WatchEmail
                     File.Delete(attachmentPath);
                 }
             }
+            mail.Move(pdfFolder);
         }
     }
 }
