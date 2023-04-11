@@ -123,7 +123,7 @@ namespace WatchEmail
 
             foreach (Attachment attachment in mail.Attachments)
             {
-                if (attachment.FileName.EndsWith(".pdf"))
+                if (attachment.FileName.ToLower().EndsWith(".pdf"))
                 {
                     string attachmentPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), attachment.FileName);
                     attachment.SaveAsFile(attachmentPath);
@@ -141,11 +141,12 @@ namespace WatchEmail
                             }
                         }
                     }
-                    Console.WriteLine('\n' +"end of pdf reached.");
+                    Console.WriteLine('\n' +"no one from IT quits.");
                     reader.Close();
                     File.Delete(attachmentPath);
                 }
             }
+            Console.WriteLine('\n' + "no attachment detected.");
             mail.Move(pdfFolder);
         }
     }
