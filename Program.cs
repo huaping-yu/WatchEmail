@@ -120,33 +120,34 @@ namespace WatchEmail
             }
 
             MailItem mail = (MailItem)Item;
-
-            foreach (Attachment attachment in mail.Attachments)
-            {
-                if (attachment.FileName.ToLower().EndsWith(".pdf"))
+            if(mail.Attachments.Count >0)
+                foreach (Attachment attachment in mail.Attachments)
                 {
-                    string attachmentPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), attachment.FileName);
-                    attachment.SaveAsFile(attachmentPath);
-                    PdfReader reader = new(attachmentPath);
-
-                    for (int i = 1; i <= reader.NumberOfPages; i++)
+                    if (attachment.FileName.ToLower().EndsWith(".pdf"))
                     {
-                        string[] lines = PdfTextExtractor.GetTextFromPage(reader, i).Split('\n');
+                        string attachmentPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), attachment.FileName);
+                        attachment.SaveAsFile(attachmentPath);
+                        PdfReader reader = new(attachmentPath);
 
-                        foreach (string line in lines)
+                        for (int i = 1; i <= reader.NumberOfPages; i++)
                         {
-                            if (line.Contains(" Information Technology "))
+                            string[] lines = PdfTextExtractor.GetTextFromPage(reader, i).Split('\n');
+
+                            foreach (string line in lines)
                             {
-                                Console.WriteLine(line);
+                                if (line.Contains(" Information Technology "))
+                                {
+                                    Console.WriteLine(line);
+                                }
                             }
                         }
+                        Console.WriteLine('\n' +"no one from IT quits.");
+                        reader.Close();
+                        File.Delete(attachmentPath);
                     }
-                    Console.WriteLine('\n' +"no one from IT quits.");
-                    reader.Close();
-                    File.Delete(attachmentPath);
                 }
-            }
-            Console.WriteLine('\n' + "no attachment detected.");
+            else
+                Console.WriteLine('\n' + "no attachment detected.");
             mail.Move(pdfFolder);
         }
     }
