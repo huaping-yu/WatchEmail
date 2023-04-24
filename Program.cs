@@ -40,6 +40,12 @@ namespace WatchEmail
             jWatcher.Changed += new FileSystemEventHandler(P.OnjCreated);
             jWatcher.EnableRaisingEvents = true;
 
+            if (args.Length == 1 && args[0] == "o")
+            {
+                P.MakeAppointment();
+                return;
+            }
+
             // Keep the console application running
             Console.ReadLine();
         }
@@ -66,7 +72,7 @@ namespace WatchEmail
 
                 bool forScoff = ParseNGet.Program.Constants.keywordsScoff.Any(s => mail.SenderEmailAddress.Contains(s));
                 bool forBob = ParseNGet.Program.Constants.keywordsBob.Any(s => mailBody.Contains(s));
-                bool forBob2 = ParseNGet.Program.Constants.keywordsBob2.Any(s => mailBody.Contains(s));
+                bool forBob2 = ParseNGet.Program.Constants.keywordsBob2.Any(s => mailBody.ToLower().Contains(s));
                 bool forJinger = ParseNGet.Program.Constants.keywordsJinger.Any(s => mailBody.Contains(s));
                 bool findBal = ParseNGet.Program.Constants.keywordsBal.Any(s => mailBody.ToLower().Contains(s));
                 bool listVeh = ParseNGet.Program.Constants.keywordsListVeh.Any(s => mailBody.ToLower().Contains(s));
@@ -149,6 +155,29 @@ namespace WatchEmail
             else
                 Console.WriteLine('\n' + "no attachment detected.");
             mail.Move(pdfFolder);
+        }
+        protected void MakeAppointment()
+        {
+            Application outlook = new Application();
+            AppointmentItem appointment = outlook.CreateItem(OlItemType.olAppointmentItem);
+
+            appointment.Subject = "Huaping Yu OOO";
+            appointment.Location = "OOO";
+            appointment.Start = new DateTime(2023, 04, 22, 08, 30, 0);
+            appointment.End = new DateTime(2023, 04, 22, 17, 30, 0);
+
+            Recipient optionalAttendee = appointment.Recipients.Add("IT-TollingAppSupport@ntta.org");
+            optionalAttendee.Type = (int)OlMeetingRecipientType.olOptional;
+
+            appointment.Save();
+
+            MailItem mail = appointment.ForwardAsVcal();
+            mail.Recipients.Add("HYu@ntta.org");
+
+            //mail.Recipients.Add("IT-TollingAppSupport@ntta.org");
+
+            mail.DeferredDeliveryTime = appointment.Start.Subtract(TimeSpan.FromHours(8));
+            mail.Send();
         }
     }
 }
