@@ -128,7 +128,7 @@ namespace WatchEmail
             }
 
             MailItem mail = (MailItem)Item;
-            if(mail.Attachments.Count >0)
+            if (mail.Attachments.Count > 0)
                 foreach (Attachment attachment in mail.Attachments)
                 {
                     if (attachment.FileName.ToLower().EndsWith(".pdf"))
@@ -149,7 +149,7 @@ namespace WatchEmail
                                 }
                             }
                         }
-                        Console.WriteLine('\n' +"no one from IT quits.");
+                        Console.WriteLine('\n' + "no one from IT quits.");
                         reader.Close();
                         File.Delete(attachmentPath);
                     }
