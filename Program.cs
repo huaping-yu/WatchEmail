@@ -80,9 +80,11 @@ namespace WatchEmail
                 bool forDon = ParseNGet.Program.Constants.keywordsDon.Any(s => mailBody.ToLower().Contains(s));
                 bool forSeema = ParseNGet.Program.Constants.keywordsSeema.Any(s => mailBody.ToLower().Contains(s));
                 bool provideVIN = ParseNGet.Program.Constants.keywordsVIN.Any(s => mailBody.Contains(s));
+                bool provideLS = ParseNGet.Program.Constants.keywordsLS.Any(s => mailBody.Contains(s));
                 bool noArg = forBob || findBal || listVeh || locateChk || forDon || forScoff;
 
                 if (provideVIN) arg = "v";
+                else if (provideLS) arg = "ls";
                 else if (noArg) arg = string.Empty;
 
                 if (forJinger || forSeema || forBob2)
