@@ -128,6 +128,8 @@ namespace WatchEmail
             }
 
             MailItem mail = (MailItem)Item;
+            string date = mail.SentOn.ToString();
+
             if (mail.Attachments.Count > 0)
                 foreach (Attachment attachment in mail.Attachments)
                 {
@@ -149,7 +151,7 @@ namespace WatchEmail
                                 }
                             }
                         }
-                        Console.WriteLine('\n' + "no one from IT quits.");
+                        Console.WriteLine('\n' + date + ": No one from IT quits.");
                         reader.Close();
                         File.Delete(attachmentPath);
                     }
