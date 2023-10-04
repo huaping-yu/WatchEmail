@@ -45,7 +45,6 @@ namespace WatchEmail
                 P.MakeAppointment();
                 return;
             }
-
             // Keep the console application running
             Console.ReadLine();
         }
@@ -165,7 +164,7 @@ namespace WatchEmail
             Application outlook = new Application();
             AppointmentItem appointment = outlook.CreateItem(OlItemType.olAppointmentItem);
 
-            appointment.Subject = "Huaping Yu OOO";
+            appointment.Subject = "OOO";
             appointment.Location = "OOO";
             appointment.Start = new DateTime(2023, 04, 22, 08, 30, 0);
             appointment.End = new DateTime(2023, 04, 22, 17, 30, 0);
@@ -177,9 +176,6 @@ namespace WatchEmail
 
             MailItem mail = appointment.ForwardAsVcal();
             mail.Recipients.Add("HYu@ntta.org");
-
-            //mail.Recipients.Add("IT-TollingAppSupport@ntta.org");
-
             mail.DeferredDeliveryTime = appointment.Start.Subtract(TimeSpan.FromHours(8));
             mail.Send();
         }
