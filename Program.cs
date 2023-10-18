@@ -128,6 +128,7 @@ namespace WatchEmail
 
             MailItem mail = (MailItem)Item;
             string date = mail.SentOn.ToString();
+            int quitCT = 0;
 
             if (mail.Attachments.Count > 0)
                 foreach (Attachment attachment in mail.Attachments)
@@ -146,11 +147,13 @@ namespace WatchEmail
                             {
                                 if (line.Contains(" Information Technology "))
                                 {
-                                    Console.WriteLine(line);
+                                    Console.WriteLine(line.Split("-")[0]);
+                                    Console.WriteLine(line.Split("-")[1]);
+                                    quitCT++;
                                 }
                             }
                         }
-                        Console.WriteLine('\n' + date + ": No one from IT quits.");
+                       if (quitCT == 0) Console.WriteLine('\n' + date + ": No one from IT quits.");
                         reader.Close();
                         File.Delete(attachmentPath);
                     }
