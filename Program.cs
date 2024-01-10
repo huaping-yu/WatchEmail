@@ -62,7 +62,7 @@ namespace WatchEmail
         {
             MailItem mail = (MailItem)Item;
 
-            string fileName = @"C:\Source\GetNZip\GetNZip\bin\Debug\p.exe";
+            string fileName = @"C:\Source\GetNZip\GetNZip\bin\Debug\pp.exe";
             string arg = "n";
 
             if (mail != null)
