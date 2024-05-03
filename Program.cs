@@ -62,7 +62,7 @@ namespace WatchEmail
         {
             MailItem mail = (MailItem)Item;
 
-            string fileName = @"C:\Source\GetNZip\GetNZip\bin\Debug\pp.exe";
+            string fileName = @"C:\Source\GetNZip\GetNZip\bin\Debug\p.exe";
             string arg = "n";
 
             if (mail != null)
@@ -107,7 +107,6 @@ namespace WatchEmail
                     }
                 };
                 proc.Start();
-                //proc.BeginOutputReadLine();
                 string stdoutx = proc.StandardOutput.ReadToEnd();
                 Console.WriteLine("Stdout : {0}", stdoutx);
                 proc.WaitForExit();
