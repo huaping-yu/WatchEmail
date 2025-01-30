@@ -152,7 +152,7 @@ namespace WatchEmail
                                 }
                             }
                         }
-                       if (quitCT == 0) Console.WriteLine('\n' + date + ": No one from IT quits.");
+                        if (quitCT == 0) Console.WriteLine('\n' + date + ": No one from IT quits.");
                         reader.Close();
                         File.Delete(attachmentPath);
                     }
