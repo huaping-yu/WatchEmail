@@ -33,7 +33,7 @@ namespace WatchEmail
 
             FileSystemWatcher jWatcher = new()
             {
-                Path = (ParseNGet.Program.RemoteSave ? ParseNGet.Program.Constants.jingerFolder.Replace("C:", "Y:") : ParseNGet.Program.Constants.jingerFolder),
+                Path = (ParseNGet.Program.RemoteSave ? ParseNGet.Program.Constants.saraFolder.Replace("C:", "Y:") : ParseNGet.Program.Constants.saraFolder),
                 NotifyFilter = NotifyFilters.LastWrite,
                 Filter = "*-Msg.txt"
             };
@@ -56,7 +56,7 @@ namespace WatchEmail
         protected void OnjCreated(object source, FileSystemEventArgs e)
         {
             ParseNGet.Program pg = new();
-            pg.UpdateJingerDrafts(System.IO.Path.GetDirectoryName(e.FullPath));
+            pg.UpdateSaraDrafts(System.IO.Path.GetDirectoryName(e.FullPath));
         }
         protected void Items_ItemAdd(object Item)
         {
@@ -72,7 +72,7 @@ namespace WatchEmail
                 bool forScoff = ParseNGet.Program.Constants.keywordsScoff.Any(s => mail.SenderEmailAddress.Contains(s));
                 bool forBob = ParseNGet.Program.Constants.keywordsBob.Any(s => mailBody.Contains(s));
                 bool forBob2 = ParseNGet.Program.Constants.keywordsBob2.Any(s => mailBody.ToLower().Contains(s));
-                bool forJinger = ParseNGet.Program.Constants.keywordsJinger.Any(s => mailBody.Contains(s));
+                bool forSara = ParseNGet.Program.Constants.keywordsSara.Any(s => mailBody.Contains(s));
                 bool findBal = ParseNGet.Program.Constants.keywordsBal.Any(s => mailBody.ToLower().Contains(s));
                 bool listVeh = ParseNGet.Program.Constants.keywordsListVeh.Any(s => mailBody.ToLower().Contains(s));
                 bool locateChk = ParseNGet.Program.Constants.keywordsChk.Any(s => mailBody.ToLower().Contains(s));
@@ -86,7 +86,7 @@ namespace WatchEmail
                 else if (provideLS) arg = "ls";
                 else if (noArg) arg = string.Empty;
 
-                if (forJinger || forSeema || forBob2)
+                if (forSara || forSeema || forBob2)
                 {
                     fileName = @"C:\Source\GetNZip\GetNZip\bin\Debug\z.exe";
                     arg = string.Empty;
